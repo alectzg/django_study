@@ -1,73 +1,46 @@
 #------ coding=utf-8 --------
-#generatory service instance
-#‘› ±≤ª÷ß≥÷µ•∑Ω∑®
+# generatory service instance
+# Âä®ÊÄÅÂØºÂÖ•Ê®°ÂùóÔºåÂπ∂ÁîüÊàêÊúçÂä°ÂÆû‰æã
 import importlib
+import re
 
 class ServInstance_Factory(object):
 	instance = None
-	def __init__():
+	def __init(self, param):
 		pass
 	
-	# ¿˚”√call£¨ µœ÷singleton
-	def __call__(self,*args,**kw):
+		# ÈÄöËøá__call__ÂÆûÁé∞singleton
+	def __call__(self, *args, **kw):
 		if self.instance is None:
-			self.instance=supper(object,self).__call__(*args,**kw)
+			self.instance = super(object, self).__call__(*args, **kw)
 		return self.instance
 	
 	
-	def gen_serviceInstance(self,classPath,method):
-		instanceObj=None
-		subModule=None
-		module=None
-		if method is None or method=="":
-			module=classPath
+	def gen_serviceInstance(self, classPath, method, attrType):
+		
+		def wraper(func):
+			def func_ext(*args, **kw):
+				return func.__call__(*args, **kw)
+			return func_ext
+		
+		module = None
+		if method is None or method == "":
+			raise Exception("the module is empty")
 		else:
-			subModule=classPath
-			module=method
-		importlib.import_module(module,subModule)
-		return eval(module+"()")
+			__class = None
+			if attrType == 1:
+				__class = re.sub(r'^.*?\.(.*)$', "\\1", classPath)
+				classPath = re.sub(r'^(.*?)\.[^\\.]+$', "\\1", classPath)
+			module = re.sub(r'^.*?\.(.*)$', "\\1", classPath)
+			subPackage = re.sub(r'^(.*?)\.[^\\.]+$', "\\1", classPath)
+		__module = importlib.import_module(module, subPackage)
+		if attrType == 1:
+			func = getattr(getattr(__module, __class)(), method)
+			return wraper(func)
+		if attrType == 0:
+			func = getattr(__module, method)
+			return wraper(func)
 
-
-class MetaServInstance(type):
-    
-	@classmethod
-	def nonOp(self,*args,**kw):
-		pass
-	
-	doBeforeOp=nonOp
-	doAfterOp=nonOp
-	setTransaction
-	
-	@classmethod
-	def setBeforeOp(funct):
-		doBeforeOp=funct
-	
-	@classmethod
-	def setAfterOp(funct):
-		doAfterOp=funct
-		
-	@classmethod 
-	def define_transcation(funct)
-	    setTransaction=funct
-	
-	@classmethod
-	def __new__(cls,name,bases,mdict):
-		
-		def doAop(funct):
-			obj=new object()
-			def wrapper(*args,**kw):
-				MetaServInstance.doBeforeOp(obj,*args,**kw)
-				retValue=funct(*args,**kw)
-				MetaServInstance.doAfterOp(obj,*args,**kw)
-				return retValue
-			return wrapper
-		
-		for key,attrVal in mdict.items():
-			if key == "toDo":
-				attrVal=mdict[key]
-				mdict[key]=doAop(attrVal)
-			mdict["setConnection"]=setTransaction
-			return super(MetaServInstance,self).__new__(self,name,bases,mdict)
 		
 		
 		

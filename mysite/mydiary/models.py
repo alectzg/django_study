@@ -4,8 +4,9 @@ from django.db import models
 class service(models.Model):
 	service_name=models.CharField(max_length=200,primary_key=True)
 	service_type=models.IntegerField()
-	definition=models.CharField(max_length=400)
 	method=models.CharField(max_length=200,null=True)
+	module=models.CharField(max_length=2000,null=True)
+	attrType=models.IntegerField()
 	modifier=models.CharField(max_length=200,null=True)
 	def __unicode__(self):
 		return self.service_name
