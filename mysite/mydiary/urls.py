@@ -5,4 +5,5 @@ admin.autodiscover()
 
 urlpatterns=patterns('',
 	url(r'^index$','mydiary.views.index'),
+	url(r'^searchService/(?P<serviceName>\w+)/$','mydiary.views.showService')
 )

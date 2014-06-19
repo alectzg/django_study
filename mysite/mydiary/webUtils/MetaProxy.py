@@ -44,3 +44,12 @@ class MetaServInstance(type):
                 mdict[key] = doAop(attrVal)
             mdict["setConnection"] = MetaServInstance.setTransaction
             return super(MetaServInstance, cls).__new__(cls, name, bases, mdict)
+
+def doBusiBefore():
+	print("begin Translateion")
+
+def doBusiAfter():
+	print("commit Translation!")
+
+MetaServInstance.setBeforeOp(doBusiBefore)
+MetaServInstance.setAfterOp(doBusiAfter)

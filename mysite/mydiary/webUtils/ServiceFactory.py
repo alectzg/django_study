@@ -15,6 +15,11 @@ class ServInstance_Factory(object):
 			self.instance = super(object, self).__call__(*args, **kw)
 		return self.instance
 	
+	@classmethod
+	def __new__(cls,*args,**kw):
+		if cls.instance is None:
+			cls.instance=super(ServInstance_Factory,cls).__new__(*arg,**kw)
+		return cls.instance
 	
 	def gen_serviceInstance(self, classPath, method, attrType):
 		
