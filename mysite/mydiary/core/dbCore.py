@@ -60,19 +60,36 @@ class dbUtils(metaclass=db_meta):
     
     def getConnection(self):
         pass
-
+	
+	def getCursor(self,conn,isRowFactory):
+		pass
+	
     def relaseConnction(self, conn):
         pass
 
 class dbUtils_sqlite_Impl(object):
     def __init__(self):
-        print("dbUtils sqlite implemention ")
+        #print("dbUtils sqlite implemention ")
+		global database_configs
+		sqlite_config=database_configs["default"]
+		self.database.file=sqlite_config["NAME"];
     
     def getConnection(self):
-        print("sqlite3 get connection with python ")
-    
+        #print("sqlite3 get connection with python ")
+		import sqlite3
+		conn=sqlite3.connect(self.database.file)
+		return conn
+		
+    def getCursor(self,conn,isRowFactory):
+		cursor=conn.cursor()
+		if isRowFactory:
+			import sqlite3
+			cursor.row_factory=sqlite3.Row
+		return cursor
+	
     def releaseConnection(self, conn):
-        print("release connection")
+        #print("release connection")
+		conn.close()
 
 class dbUtilsFactory(object):
     
@@ -98,6 +115,7 @@ class dbUtilsFactory(object):
     def __new__(cls, *args, **kw):
         if cls.instance is None:
             cls.instance = super(dbUtilsFactory, cls).__new__(*args, **kw)
+			cls.instance.__init_instance()
         return dbUtilsFactory.instance		
 	
 	def getDbUtils_Instance(self, key):

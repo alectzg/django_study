@@ -29,3 +29,14 @@ class serv_ext(models.Model):
 	
 	def __unicode__(self):
 		return self.service.service_name+" | "+self.section
+	
+
+class telephone_contact(models.Model):
+	userName=models.CharField(max_length=100,null=False)
+	mobile=models.CharField(max_length=13)
+	phone=models.CharField(max_length=13)
+	email=models.CharField(max_length=60)
+	zip=models.CharField(max_length=10)
+	
+	def __unicode__(self):
+		return "{0} | {1}".format(self.userName,self.mobile)

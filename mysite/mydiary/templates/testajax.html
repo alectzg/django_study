@@ -1,0 +1,30 @@
+<html>
+  <head>
+     <title> call service demo page </title>
+	 <script type="text/javascript" src="../file/static/jquery-1.8.2.js"></script>
+	 <script type="text/javascript" src="../file/static/JsonTools.js"></script>
+	 <script type="text/javascript" src="../file/static/django_ajax_safe.js"></script>
+	 <script type="text/javascript" >
+		function request_to_django(){
+			var reqObj={serviceName:"Query_Contact_List",data:{}}
+			var ajax_data=jsonTools.dump(reqObj);
+			console.info("send ajax request");
+			$.ajax({
+				type:"POST",
+				url:"../callAjax/",
+				success:function(){
+				  console.info("success");
+				},
+				dataType:"text"
+			}).done(function(data){
+				$("#ajax_response").html(data)
+			});
+		}
+	 </script>
+  </head>
+  <form>
+     <input type="button" id="ajax_btn" value="$.ajax(post)"  onclick="request_to_django()" />
+  </form>
+  <div id="ajax_response">
+  </div>
+</html>

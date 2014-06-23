@@ -9,10 +9,10 @@ class service_admin(admin.ModelAdmin):
 	
 	fieldsets = [
 	 (None,{"fields":["service_name"]}),
-	 ("Service Detail",{"fields":["service_type","definition","method","modifier"]}),
+	 ("Service Detail",{"fields":["service_type","module","method","modifier","attrType"]}),
 	]
 	
-	list_display=("service_name","service_type","definition","method","modifier")
+	list_display=("service_name","service_type","module","method","modifier","attrType")
 
 class serv_ext_admin(admin.ModelAdmin):
 	fields=["service","seq","section"]
