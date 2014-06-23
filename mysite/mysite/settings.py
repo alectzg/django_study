@@ -63,6 +63,8 @@ DATABASES = {
     }
 }
 
+DATABASES_UTILS="mydiary.core.dbCore.dbUtils_sqlite_Impl"
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -81,3 +83,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_FILE={
+ "mydiary":os.path.join(BASE_DIR,"mydiary/web"),
+ }
