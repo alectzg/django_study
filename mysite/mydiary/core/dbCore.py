@@ -59,10 +59,10 @@ class dbUtils(metaclass=db_meta):
         pass
     
     def getConnection(self):
+	    pass
+		
+    def getCursor(self,conn,isRowFactory):
         pass
-	
-	def getCursor(self,conn,isRowFactory):
-		pass
 	
     def relaseConnction(self, conn):
         pass
@@ -70,22 +70,22 @@ class dbUtils(metaclass=db_meta):
 class dbUtils_sqlite_Impl(object):
     def __init__(self):
         #print("dbUtils sqlite implemention ")
-		global database_configs
-		sqlite_config=database_configs["default"]
-		self.database.file=sqlite_config["NAME"];
+        global database_configs
+        sqlite_config=database_configs["default"]
+        self.database.file=sqlite_config["NAME"]
     
     def getConnection(self):
         #print("sqlite3 get connection with python ")
-		import sqlite3
-		conn=sqlite3.connect(self.database.file)
-		return conn
+        import sqlite3
+        conn=sqlite3.connect(self.database.file)
+        return conn
 		
     def getCursor(self,conn,isRowFactory):
 		cursor=conn.cursor()
-		if isRowFactory:
+        if isRowFactory:
 			import sqlite3
 			cursor.row_factory=sqlite3.Row
-		return cursor
+        return cursor
 	
     def releaseConnection(self, conn):
         #print("release connection")
