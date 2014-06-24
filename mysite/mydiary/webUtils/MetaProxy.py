@@ -15,16 +15,16 @@ class MetaServInstance(type):
     setTransaction = nonOp
     
     @classmethod
-    def setBeforeOp(funct):
-        doBeforeOp = funct
+    def setBeforeOp(cls,funct):
+        cls.doBeforeOp = funct
     
     @classmethod
-    def setAfterOp(funct):
-        doAfterOp = funct
+    def setAfterOp(cls,funct):
+        cls.doAfterOp = funct
         
     @classmethod 
-    def define_transcation(funct):
-        setTransaction = funct
+    def define_transcation(cls,funct):
+        cls.setTransaction = funct
     
     @classmethod
     def __new__(cls, name, bases, mdict):
