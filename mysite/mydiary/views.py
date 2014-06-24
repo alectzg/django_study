@@ -28,17 +28,21 @@ def showService(req,serviceName):
 	
 
 def callAjax(req):
-	if req["method"]=="GET":
-		return None
-	if req["method"]=="POST":
-		
+	if req.method=="GET":
+		return do_render_404_error(req)
+	if req.method=="POST":
+		'''
+		dataContext=dict({ "post_ajax":"haha" })
+		return render(req,"corejson.html",dataContext)
+		'''		
 		try:
 			__post_ajax=dealRequest(req)
-			dataContext=dict({ "__post_ajax":__post_ajax })
-			return render(req,"mydiary/web/corejson.html",dataContext)
-		except err as Exception:
+			#__post_ajax='{"user":"alec","age":20,"language":["python","java","c/c++"]}'
+			dataContext=dict({ "post_ajax":__post_ajax })
+			return render(req,"corejson.html",dataContext)
+		except Exception as err :
 			raise err
-
+		
 def sendMsg(req):
 	dataContext={"msg_subject":"FM clear Alarm notice!","msg_detail":"show me your profile production"}
 	return render(req,"msg_template.html",dataContext)
