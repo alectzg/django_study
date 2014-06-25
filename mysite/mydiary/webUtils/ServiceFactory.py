@@ -41,9 +41,11 @@ class ServInstance_Factory(object):
 			if attrType == 1:
 				__class = re.sub(r'^.*?\.(.*)$', "\\1", classPath)
 				classPath = re.sub(r'^(.*?)\.[^\\.]+$', "\\1", classPath)
-			module = re.sub(r'^.*?\.(.*)$', "\\1", classPath)
+			module = re.sub(r'^.*?\.([^\\.]+)$', "\\1", classPath)
 			subPackage = re.sub(r'^(.*?)\.[^\\.]+$', "\\1", classPath)
-		__module = importlib.import_module(module, subPackage)
+		print("module: ",module," sub package: ",subPackage )
+		#__module = importlib.import_module(module, subPackage)
+		__module=__import__(module,fromlist=[subPackage])
 		if attrType == 1:
 			func = getattr(getattr(__module, __class)(), method)
 			return wraper(func)
@@ -53,4 +55,6 @@ class ServInstance_Factory(object):
 
 		
 		
-		
+if __name__ == '__main__':
+	servFactory=ServInstance_Factory()
+	funct=servFactory.gen_serviceInstance("mydiary.busi.ServiceBusi.serviceManager", "Contact_Operation", 1)
