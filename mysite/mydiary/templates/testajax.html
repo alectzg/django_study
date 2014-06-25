@@ -15,7 +15,7 @@
 				success:function(){
 				  console.info("success");
 				},
-				data:"{__post_ajax:'"+ajax_data+"'}"
+				data:"__post_ajax="+ajax_data+"",
 				dataType:"text"
 			}).done(function(data){
 				$("#ajax_response").html(data)
@@ -28,5 +28,9 @@
   </form>
   <div id="ajax_response">
   </div>
+  <form method="post" action="../callAjax/">
+    <input type="text" name="userName" >
+	<input type="submit" id="submitBtn" value="submit" />
+  </form>
 </html>
 <script type="text/javascript" src="../file/static/django_ajax_safe.js"></script>

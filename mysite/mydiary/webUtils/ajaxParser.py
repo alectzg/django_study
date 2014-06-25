@@ -1,7 +1,9 @@
 import json
+import re
 
 def parseAjaxRequest(isJson,paramater):
 	if isJson:
+		paramater=re.sub(r'\'','"',paramater)
 		paramObj=json.loads(paramater)
 		return (paramObj["serviceName"],paramObj)
 	else:

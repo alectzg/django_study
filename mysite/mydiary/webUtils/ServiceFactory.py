@@ -4,6 +4,10 @@
 import importlib
 import re
 
+from mydiary.logger.Pylogger import Pylogger
+
+mlogger=Pylogger()
+
 class ServInstance_Factory(object):
 	instance = None
 	def __init(self, param):
@@ -18,11 +22,12 @@ class ServInstance_Factory(object):
 	@classmethod
 	def __new__(cls,*args,**kw):
 		if cls.instance is None:
-			cls.instance=super(ServInstance_Factory,cls).__new__(*arg,**kw)
+			cls.instance=super(ServInstance_Factory,cls).__new__(*args,**kw)
 		return cls.instance
 	
 	def gen_serviceInstance(self, classPath, method, attrType):
-		
+		mlogger.info("classPath: "+classPath)
+		mlogger.info("method: "+method)
 		def wraper(func):
 			def func_ext(*args, **kw):
 				return func.__call__(*args, **kw)
