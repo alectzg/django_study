@@ -10,7 +10,7 @@ ServInstanceObj = None
 mlogger = Pylogger()
 
 def dealRequest(req):
-	request_json = req.POST.get("__post_ajax", "")
+	request_json = req.REQUEST.get("__post_ajax", "")
 	
 	'''
 	varAjaxJson=req.POST.get("__post_ajax");
@@ -19,13 +19,12 @@ def dealRequest(req):
 	for key in req.POST:
 		mlogger.info("parameter {0} >> value {1} ".format(key, req.POST.getlist(key)))
 	#return '{"request_json":\'%s\'}' % (request_json)
-	mlogger.info("request_json"+request_json)
+
 	serviceName, requestParam = parseAjaxRequest(True, request_json)
 	mlogger.info("serviceName: {0} ,parameter :{1} ".format(serviceName,requestParam))
 	if serviceName is None or serviceName == "":
 		return None
 	else:
-		#serviceObj = service.objects.get(service_name=serviceName)
 		serviceObj = service.objects.filter(service_name=serviceName)
 		if len(serviceObj) > 0:
 			module = serviceObj[0].module
@@ -36,6 +35,7 @@ def dealRequest(req):
 				ServInstanceObj = ServInstance_Factory()
 			busiFunc = ServInstanceObj.gen_serviceInstance(module, method, attrType)
 			try:
+				
 				busiFunc(requestParam)
 				requestParam["serviceName"] = serviceName
 				return encodeAjaxResponse(requestParam)

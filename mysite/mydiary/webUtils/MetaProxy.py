@@ -26,30 +26,46 @@ class MetaServInstance(type):
     def define_transcation(cls,funct):
         cls.setTransaction = funct
     
-    @classmethod
+    #@classmethod
     def __new__(cls, name, bases, mdict):
-        
+        print("cls: ",cls," >> name: ",name)
         def doAop(funct):
             obj = object()
             def wrapper(*args, **kw):
-                MetaServInstance.doBeforeOp(obj, *args, **kw)
+                cls.doBeforeOp(obj, *args, **kw)
+                print("do some thing before")
                 retValue = funct(*args, **kw)
-                MetaServInstance.doAfterOp(obj, *args, **kw)
+                cls.doAfterOp(obj, *args, **kw)
                 return retValue
             return wrapper
         
         for key, attrVal in mdict.items():
+            print("key: ",key)
             if key == "toDo":
                 attrVal = mdict[key]
                 mdict[key] = doAop(attrVal)
-            mdict["setConnection"] = MetaServInstance.setTransaction
-            return super(MetaServInstance, cls).__new__(cls, name, bases, mdict)
+        mdict["setConnection"] = MetaServInstance.setTransaction
+        return super(MetaServInstance, cls).__new__(cls, name, bases, mdict)
 
-def doBusiBefore():
+def doBusiBefore(self,*args,**kw):
 	print("begin Translateion")
 
-def doBusiAfter():
+def doBusiAfter(self,*args,**kw):
 	print("commit Translation!")
 
 MetaServInstance.setBeforeOp(doBusiBefore)
 MetaServInstance.setAfterOp(doBusiAfter)
+
+if __name__=="__main__":
+    class A(metaclass=MetaServInstance):
+        def __init__(self):
+            print("init A")
+            
+        def display(self):
+            print("lemei");
+            return self
+            
+        def toDo(self):
+            print("滚")
+            return self
+    A().display().toDo().setConnection()

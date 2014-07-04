@@ -1,8 +1,10 @@
 # ----*---- coding:utf-8 ------*-------
-from mydiary.models import service
+
 from mydiary.webUtils.MetaProxy import MetaServInstance
 from mydiary.core.dbCore import dbUtilsFactory
+from mydiary.logger.Pylogger import Pylogger 
 
+mlogger = Pylogger()
 
 class serviceManager(object, metaclass=MetaServInstance):
 	def __init__(self):
@@ -14,10 +16,13 @@ class serviceManager(object, metaclass=MetaServInstance):
 		paramDict["operation_status"] = "success"
 	
 	def Contact_Operation(self, paramDict):
-		if not hasattr(paramDict, "serviceName"):
+		for key in paramDict.keys():
+			mlogger.info("key: "+key)
+		if not paramDict.__contains__("serviceName"):
 			raise Exception("serviceName is not exists in request parameters!")
 		serviceName = paramDict["serviceName"]
-		if serviceName == "queryContact":
+		mlogger.info("serviceName: "+serviceName)
+		if serviceName == "Query_Contact_List":
 			self.queryContact(paramDict)
 		else:
 			pass
@@ -35,7 +40,7 @@ class serviceManager(object, metaclass=MetaServInstance):
 			recordItem = {}
 			for key in rowItem.keys():
 				recordItem[key] = rowItem[key]
-			resultList.add(recordItem)
+			resultList.append(recordItem)
 		if len(resultList) == 1:
 			reqDict["data"] = resultList[0]
 		elif len(resultList) > 1 :
